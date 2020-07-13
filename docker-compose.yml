@@ -13,21 +13,40 @@ services:
       - api
 
   php7:
+#    build:
+#      context: ./php
     image: php:7.4-fpm-alpine
     ports:
       - "9000:9000"
     working_dir: /app
     volumes:
-      - ./php/php.ini:/usr/local/etc/php/php.ini
+#      - ./php/php.ini:/usr/local/etc/php/php.ini
       - ./api:/app
+    env_file:
+      - .env
+    depends_on:
+      - database
     networks:
       - api
-    command: php-fpm
 
   composer:
     image: library/composer:2
     volumes:
       - ./api:/app
+    networks:
+      - api
+
+  database:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "3306:${DB_PORT}"
     networks:
       - api
 
