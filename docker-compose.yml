@@ -15,6 +15,13 @@ services:
   php7:
     build:
       context: ./php
+      args:
+        - WITH_XDEBUG=${WITH_XDEBUG}
+        - XDEBUG_IDEKEY=${XDEBUG_IDEKEY}
+        - REMOTE_HOST=${REMOTE_HOST}
+        - REMOTE_POST=${REMOTE_POST}
+        - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
+    restart: always
     ports:
       - "9000:9000"
     working_dir: /app
