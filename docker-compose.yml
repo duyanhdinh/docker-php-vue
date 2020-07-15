@@ -46,7 +46,7 @@ services:
     ports:
       - "3306:${DB_PORT}"
     volumes:
-      - database_mysql
+      - database_mysql:/var/lib/mysql
     networks:
       - api
 
