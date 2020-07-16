@@ -1,9 +1,9 @@
 FROM php:7.4-fpm-alpine
 
-ARG WITH_XDEBUG
-ARG XDEBUG_IDEKEY
-ARG REMOTE_HOST
-ARG REMOTE_POST
+ARG WITH_XDEBUG=false
+ARG XDEBUG_IDEKEY=PHPSTORM
+ARG REMOTE_HOST=host.docker.internal
+ARG REMOTE_POST=9001
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
@@ -16,5 +16,6 @@ RUN apk add --no-cache $PHPIZE_DEPS \
     echo "display_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.idekey=\"$XDEBUG_IDEKEY\"\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
+    echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.remote_hort=$REMOTE_HOST\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.remote_port=$REMOTE_POST\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
