@@ -9,17 +9,25 @@ services:
       - ./api:/app
 #     - ./nginx:/etc/nginx/templates
       - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php7
     networks:
       - api
 
   php7:
     build:
       context: ./php
+      args:
+        - WITH_XDEBUG=${WITH_XDEBUG}
+        - XDEBUG_IDEKEY=${XDEBUG_IDEKEY}
+        - REMOTE_HOST=${REMOTE_HOST}
+        - REMOTE_POST=${REMOTE_POST}
     ports:
       - "9000:9000"
     working_dir: /app
     volumes:
       - ./api:/app
+      - ./php/php.ini:/usr/local/etc/php/php.ini
     env_file:
       - .env
     depends_on:
