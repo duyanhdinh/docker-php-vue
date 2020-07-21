@@ -7,8 +7,7 @@ services:
       - "80:80"
     volumes:
       - ./api:/app
-#     - ./nginx:/etc/nginx/templates
-      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx:/etc/nginx/templates
     depends_on:
       - php7
     networks:
