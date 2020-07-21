@@ -7,11 +7,14 @@ services:
       - "80:80"
     volumes:
       - ./api:/app
-      - ./nginx:/etc/nginx/templates
+      - ./nginx/conf:/etc/nginx/templates
+      - ./website/src:/web
     depends_on:
       - php7
+      - website
     networks:
       - api
+      - web
 
   php7:
     build:
@@ -57,8 +60,21 @@ services:
     networks:
       - api
 
+  website:
+    build:
+      context: ./website
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./website/src:/web
+      - /web/node_modules
+      - /web/dist
+    networks:
+      - web
+
 volumes:
   database_mysql:
 
 networks:
   api:
+  web:
