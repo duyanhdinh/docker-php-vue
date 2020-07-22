@@ -7,11 +7,14 @@ services:
       - "80:80"
     volumes:
       - ./api:/app
-      - ./nginx:/etc/nginx/templates
+      - ./nginx/conf:/etc/nginx/templates
+      - dist:/web/dist
     depends_on:
       - php7
+      - website
     networks:
       - api
+      - web
 
   php7:
     build:
@@ -51,14 +54,32 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
     ports:
-      - "3306:${DB_PORT}"
+      - "${DB_PORT}:3306"
     volumes:
       - database_mysql:/var/lib/mysql
     networks:
       - api
 
+  website:
+    build:
+      context: ./website
+      args:
+        PORT: ${SERVE_PORT}
+        NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./website/src:/web
+      - node_modules:/web/node_modules
+      - dist:/web/dist
+    ports:
+      - "8080:${SERVE_PORT}"
+    networks:
+      - web
+
 volumes:
   database_mysql:
+  node_modules:
+  dist:
 
 networks:
   api:
+  web:
