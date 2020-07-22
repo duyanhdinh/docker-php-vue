@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./api:/app
+      - ./api/src:/app
       - ./nginx/conf:/etc/nginx/templates
       - dist:/web/dist
     depends_on:
@@ -28,7 +28,7 @@ services:
       - "9000:9000"
     working_dir: /app
     volumes:
-      - ./api:/app
+      - ./api/src:/app
       - ./php/php.ini:/usr/local/etc/php/php.ini
     env_file:
       - .env
@@ -40,7 +40,7 @@ services:
   composer:
     image: library/composer:2
     volumes:
-      - ./api:/app
+      - ./api/src:/app
     networks:
       - api
 
@@ -72,6 +72,8 @@ services:
       - dist:/web/dist
     ports:
       - "8080:${SERVE_PORT}"
+    env_file:
+      - .env
     networks:
       - web
 
