@@ -60,6 +60,13 @@ services:
     networks:
       - api
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - api
+
   website:
     build:
       context: ./website
