@@ -11,7 +11,7 @@ services:
       - dist:/web/dist
     depends_on:
       - php7
-      - website
+      - web
     networks:
       - api
       - web
@@ -69,7 +69,7 @@ services:
     networks:
       - api
 
-  website:
+  web:
     build:
       context: ./website
       args:
