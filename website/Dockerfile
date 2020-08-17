@@ -10,7 +10,7 @@ COPY ./src/yarn.lock ./
 RUN yarn install
 
 COPY ./src .
-RUN yarn run lint
+RUN yarn run build
 
 EXPOSE $SERVE_PORT
-CMD ["yarn", "build"]
+CMD ["yarn", "serve"]
